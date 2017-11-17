@@ -1,6 +1,6 @@
 .PHONY: clean
 
-CFLAGS := -Wall -Wextra -ansi -pedantic -Iinclude
+CFLAGS := -Wall -Wextra -std=c99 -pedantic -Iinclude
 
 CFILES := $(shell find src -type f -name '*.c')
 OFILES := $(CFILES:.c=.o)
