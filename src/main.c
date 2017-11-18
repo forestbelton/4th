@@ -1,11 +1,14 @@
 #include "ops.h"
 #include "vm.h"
+#include "compile/ast.h"
 
 #include <stdio.h>
 #include <string.h>
 
 int main() {
-    struct vm vm;
+    struct prgm *prgm = ast_parse(stdin);
+
+    /*struct vm vm;
 
     struct term one;
     one.type = TYPE_INTEGER;
@@ -17,7 +20,7 @@ int main() {
     vm_init(&vm, &prgm[0], sizeof prgm);
     vm_exec(&vm);
 
-    vm_dump(&vm);
+    vm_dump(&vm);*/
 
     return 0;
 }
