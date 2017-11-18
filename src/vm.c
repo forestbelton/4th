@@ -1,6 +1,7 @@
 #include "ops.h"
 #include "vm.h"
 
+#include <assert.h>
 #include <stdint.h>
 #include <stdio.h>
 
@@ -14,10 +15,12 @@ void vm_exec(struct vm *vm) {
     size_t i = 0;
 
     while (i < vm->len) {
-        uint8_t op = vm->prgm[i];
-        ops[op](vm);
+        uint8_t op = vm->prgm[i++];
+        ops[op](vm, &i);
     }
 }
+
+#define LINE_WIDTH 10
 
 void vm_dump(struct vm *vm) {
     size_t i = 0;
@@ -27,16 +30,21 @@ void vm_dump(struct vm *vm) {
     printf("======================\n");
 
     for (i = 0; i < vm->top; ++i) {
-        if (i % 10 != 0) {
+        if (i % LINE_WIDTH != 0) {
             putchar(' ');
         } else if (i > 0) {
             putchar('\n');
         }
 
-        struct term t = vm->stack[vm->top - i];
+        struct term t = vm->stack[vm->top - i - 1];
         switch (t.type) {
             case TYPE_INTEGER:
                 printf("%d", t.data.intval);
+                break;
+
+            /* Exhaustive case check */
+            default:
+                assert(0);
                 break;
         }
     }

@@ -6,12 +6,14 @@
 #define OP_TABLE_SIZE 256
 
 enum op_name {
-    OP_DUP
+    OP_DUP,
+    OP_PUSH
 };
 
-typedef void (*op)(struct vm *vm);
+typedef void (*op)(struct vm *vm, size_t *i);
 extern op ops[OP_TABLE_SIZE];
 
-extern void dup(struct vm *vm);
+extern void dup(struct vm *vm, size_t *i);
+extern void push(struct vm *vm, size_t *i);
 
 #endif

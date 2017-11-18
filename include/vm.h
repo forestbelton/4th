@@ -5,6 +5,7 @@
 #include <stdint.h>
 
 #define STACK_SIZE 512
+#define TERM_SIZE (sizeof (struct term))
 
 enum term_type {
     TYPE_INTEGER

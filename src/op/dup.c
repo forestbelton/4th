@@ -3,7 +3,7 @@
 
 #include <assert.h>
 
-void dup(struct vm *vm) {
+void dup(struct vm *vm, size_t *i) {
     assert(vm->top > 0);
 
     vm->stack[vm->top] = vm->stack[vm->top - 1];
