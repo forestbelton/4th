@@ -28,4 +28,6 @@ void vm_init(struct vm *vm, uint8_t *prgm, size_t len);
 
 void vm_exec(struct vm *vm);
 
+void vm_dump(struct vm *vm);
+
 #endif
