@@ -8,7 +8,8 @@
 enum op_name {
     OP_UNKNOWN,
     OP_DUP,
-    OP_PUSH
+    OP_PUSH,
+    OP_ADD
 };
 
 typedef void (*op)(struct vm *vm, size_t *i);
@@ -16,5 +17,6 @@ extern op ops[OP_TABLE_SIZE];
 
 extern void dup(struct vm *vm, size_t *i);
 extern void push(struct vm *vm, size_t *i);
+extern void add(struct vm *vm, size_t *i);
 
 #endif

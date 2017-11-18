@@ -69,10 +69,11 @@ enum op_name gen_op(const char *op) {
     // Initialize operator map (one time)
     if (op_map.size == 0) {
         hash_set(&op_map, ".", (void*)OP_DUP);
+        hash_set(&op_map, "+", (void*)OP_ADD);
     }
 
     const void *vop = hash_get(&op_map, op);
-    assert(vop != NULL);
+    assert(vop != NULL && "operator not found");
 
     return (enum op_name)vop;
 }

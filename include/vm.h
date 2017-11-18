@@ -12,11 +12,11 @@ enum term_type {
 };
 
 struct term {
-    enum term_type type;
+    enum term_type type : 8;
     union {
-        int intval;
+        uint32_t intval : 32;
     } data;
-};
+} __attribute__ ((packed));
 
 struct vm {
     uint8_t *prgm;
