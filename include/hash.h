@@ -6,8 +6,8 @@
 #define TABLE_SIZE 512
 
 struct hash_entry {
-    char *key;
-    void *value;
+    const char *key;
+    const void *value;
 };
 
 struct hash {
@@ -20,8 +20,8 @@ enum insert_status {
     INSERT_FAILED
 };
 
-enum insert_status hash_set(struct hash *h, char *key, void *value);
+enum insert_status hash_set(struct hash *h, const char *key, const void *value);
 
-void *hash_get(struct hash *h, char *key);
+const void *hash_get(struct hash *h, const char *key);
 
 #endif

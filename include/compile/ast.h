@@ -1,20 +1,20 @@
-#ifndef FOURTH_AST_H_
-#define FOURTH_AST_H_
+#ifndef FOURTH_COMPILE_AST_H_
+#define FOURTH_COMPILE_AST_H_
+
+#include "vm.h"
 
 #include <stdio.h>
 
 enum token_type {
     TOKEN_UNKNOWN,
-    TOKEN_NATURAL,
-    TOKEN_STRING,
+    TOKEN_TERM,
     TOKEN_OPERATOR
 };
 
 struct token {
     enum token_type type;
     union {
-        int nat;
-        char *str;
+        struct term term;
         char *op;
     } data;
 };

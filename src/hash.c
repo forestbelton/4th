@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include <string.h>
 
-uint32_t hash(char *data) {
+uint32_t hash(const char *data) {
     uint32_t out = 0;
 
     while (*data) {
@@ -15,7 +15,7 @@ uint32_t hash(char *data) {
     return out;
 }
 
-enum insert_status hash_set(struct hash *h, char *key, void *value) {
+enum insert_status hash_set(struct hash *h, const char *key, const void *value) {
     uint32_t index;
 
     if (h->size >= TABLE_SIZE - 1) {
@@ -37,8 +37,8 @@ enum insert_status hash_set(struct hash *h, char *key, void *value) {
     return INSERT_SUCCEEDED;
 }
 
-void *hash_get(struct hash *h, char *key) {
-    void *out = NULL;
+const void *hash_get(struct hash *h, const char *key) {
+    const void *out = NULL;
     uint32_t index = hash(key) % TABLE_SIZE;
 
     while (h->table[index].key != NULL) {

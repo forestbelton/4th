@@ -1,26 +1,34 @@
 #include "ops.h"
 #include "vm.h"
 #include "compile/ast.h"
+#include "compile/gen.h"
 
 #include <stdio.h>
 #include <string.h>
 
 int main() {
+    printf("Parsing input...\n");
     struct prgm *prgm = ast_parse(stdin);
 
-    /*struct vm vm;
+    struct gen_buf buf;
+    buf.type = BUF_MEMORY;
 
-    struct term one;
-    one.type = TYPE_INTEGER;
-    one.data.intval = 1;
+    printf("Generating bytecode...\n");
+    gen_ast(&buf, prgm);
 
-    uint8_t prgm[1 + sizeof (struct term)] = { OP_PUSH };
-    memcpy(&prgm[1], &one, sizeof one);
+    size_t i = 0;
+    for (i = 0; i < buf.data.mem.size; ++i) {
+        printf("%02x ", buf.data.mem.data[i]);
+    }
+    printf("\n");
 
-    vm_init(&vm, &prgm[0], sizeof prgm);
+
+    struct vm vm;
+    vm_init(&vm, &buf.data.mem.data[0], buf.data.mem.size);
+
+    printf("Executing bytecode...\n");
     vm_exec(&vm);
-
-    vm_dump(&vm);*/
+    vm_dump(&vm);
 
     return 0;
 }

@@ -26,8 +26,6 @@ void vm_dump(struct vm *vm) {
     size_t i = 0;
 
     printf("======================\n");
-    printf("%zu elements on stack.\n", vm->top);
-    printf("======================\n");
 
     for (i = 0; i < vm->top; ++i) {
         if (i % LINE_WIDTH != 0) {

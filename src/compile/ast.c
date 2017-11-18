@@ -13,6 +13,7 @@ void skip_whitespace(FILE *fp);
 
 struct prgm *ast_parse(FILE *fp) {
     struct prgm *prgm = NULL;
+    struct prgm *cur = NULL;
 
     skip_whitespace(fp);
     while (!feof(fp)) {
@@ -20,11 +21,13 @@ struct prgm *ast_parse(FILE *fp) {
         next->token = ast_token_parse(fp);
         next->next = NULL;
 
-        if (prgm != NULL) {
-            prgm->next = next;
+        if (cur != NULL) {
+            cur->next = next;
+        } else {
+            prgm = next;
         }
 
-        prgm = next;
+        cur = next;
     }
 
     return prgm;
@@ -34,34 +37,16 @@ struct prgm *ast_parse(FILE *fp) {
 
 struct token ast_token_parse(FILE *fp) {
     int c = fgetc(fp);
-    enum token_type type = TOKEN_UNKNOWN;
     struct token token;
 
     if (isdigit(c)) {
-        type = TOKEN_NATURAL;
+        token = ast_token_parse_natural(fp, c);
     } else if (strchr(OP_CHARS, c) != NULL) {
-        type = TOKEN_OPERATOR;
+        token = ast_token_parse_operator(fp, c);
     } else if (c == '"') {
-        type = TOKEN_STRING;
-    }
-
-    assert(type != TOKEN_UNKNOWN);
-    switch (type) {
-        case TOKEN_NATURAL:
-            token = ast_token_parse_natural(fp, c);
-            break;
-
-        case TOKEN_OPERATOR:
-            token = ast_token_parse_operator(fp, c);
-            break;
-
-        case TOKEN_STRING:
-            token = ast_token_parse_string(fp, c);
-            break;
-
-        default:
-            assert(0);
-            break;
+        token = ast_token_parse_string(fp, c);
+    } else {
+        assert(0);
     }
 
     skip_whitespace(fp);
@@ -71,12 +56,13 @@ struct token ast_token_parse(FILE *fp) {
 struct token ast_token_parse_natural(FILE *fp, int c) {
     struct token out;
 
-    out.type = TOKEN_NATURAL;
-    out.data.nat = 0;
+    out.type = TOKEN_TERM;
+    out.data.term.type = TYPE_INTEGER;
+    out.data.term.data.intval = 0;
 
     while (isdigit(c)) {
-        out.data.nat *= 10;
-        out.data.nat += c - '0';
+        out.data.term.data.intval *= 10;
+        out.data.term.data.intval += c - '0';
 
         c = fgetc(fp);
     }
@@ -117,7 +103,7 @@ struct token ast_token_parse_operator(FILE *fp, int c) {
 struct token ast_token_parse_string(FILE *fp, int c) {
     size_t i = 0;
     struct token out;
-    char *buf = malloc(STR_SIZE);
+    /*char *buf = malloc(STR_SIZE);
 
     assert(buf != NULL);
     do {
@@ -132,7 +118,7 @@ struct token ast_token_parse_string(FILE *fp, int c) {
     // No ungetc here because we want to discard trailing quote
     buf[i] = 0;
     out.type = TOKEN_STRING;
-    out.data.str = buf;
+    out.data.str = buf;*/
 
     return out;
 }

@@ -6,6 +6,7 @@
 #define OP_TABLE_SIZE 256
 
 enum op_name {
+    OP_UNKNOWN,
     OP_DUP,
     OP_PUSH
 };
